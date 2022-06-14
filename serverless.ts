@@ -22,8 +22,18 @@ const serverlessConfiguration: AWS = {
       handler: "src/functions/createTodo.handler",
       events: [{
         http: {
-          path: "todo/{user_id}",
+          path: "todos/{user_id}",
           method: "post",
+          cors: true
+        }
+      }]
+    },
+    listTodosByUser: {
+      handler: "src/functions/listTodo.handler",
+      events: [{
+        http: {
+          path: "todos/{user_id}",
+          method: "get",
           cors: true
         }
       }]

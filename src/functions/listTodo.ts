@@ -2,7 +2,7 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import { document } from '../utils/dynamodbClient'
 
 export const handler: APIGatewayProxyHandler = async (event) => {
-  const { user_id } = JSON.parse(event.body);
+  const { user_id } = event.pathParameters;
 
   const response = await document.scan({
     TableName: "todos",

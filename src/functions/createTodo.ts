@@ -1,6 +1,7 @@
 import { v4 as uuidV4 } from 'uuid';
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { document } from '../utils/dynamodbClient';
+import { errorResponse } from '../utils/errorResponse';
 
 interface IRequestTodo {
   title: string;
@@ -8,11 +9,16 @@ interface IRequestTodo {
 }
 
 export const handler: APIGatewayProxyHandler = async (event) => {
-  //recupera user_id,title e deadline
-  const body = JSON.parse(event.body);
-  const { user_id } = event.pathParameters;
-  const { title, deadline } = body as IRequestTodo;
+  //valida os parametros
+  if (!event.body || !JSON.parse(event.body).title || !JSON.parse(event.body).deadline) {
+    return errorResponse(400, "Body must contain a title and a deadline properties.");
+  }
 
+  //recupera user_id,title e deadline
+  const { user_id } = event.pathParameters;
+  const { title, deadline } = JSON.parse(event.body) as IRequestTodo;
+
+  //cria no dynamodb
   await document.put({
     TableName: "todos",
     Item: {
@@ -28,7 +34,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
   return {
     statusCode: 201,
     body: JSON.stringify({
-      message: "Todo Created"
+      message: "Todo Created."
     })
   }
 }
