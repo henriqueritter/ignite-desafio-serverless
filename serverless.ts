@@ -29,13 +29,24 @@ const serverlessConfiguration: AWS = {
       }]
     },
     listTodosByUser: {
-      handler: "src/functions/listTodo.handler",
+      handler: "src/functions/listTodosByUserId.handler",
       events: [{
         http: {
           path: "todos/{user_id}",
           method: "get",
           cors: true
         }
+      }]
+    },
+    checkTodo: {
+      handler: "src/functions/checkTodo.handler",
+      events: [{
+        http: {
+          path: "todos/{todo_id}/done",
+          method: "patch",
+          cors: true
+        }
+
       }]
     }
   },
