@@ -3,7 +3,7 @@ import type { AWS } from '@serverless/typescript';
 const serverlessConfiguration: AWS = {
   service: 'ignite-desafio-serverless',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild', 'serverless-offline'],
+  plugins: ['serverless-esbuild', 'serverless-dynamodb-local', 'serverless-offline'],
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
@@ -22,7 +22,7 @@ const serverlessConfiguration: AWS = {
       handler: "src/functions/createTodo.handler",
       events: [{
         http: {
-          path: "todo/{userId}",
+          path: "todo/{user_id}",
           method: "post",
           cors: true
         }
@@ -41,6 +41,14 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10,
     },
+    dynamodb: {
+      stages: ["dev", "local"],
+      start: {
+        port: 8000,
+        inMemory: true,
+        migrate: true
+      }
+    }
   },
   resources: {
     Resources: {
@@ -49,8 +57,8 @@ const serverlessConfiguration: AWS = {
         Properties: {
           TableName: "todos",
           ProvisionedThroughput: {
-            ReadCapacityUnit: 5,
-            WriteCapacity: 5
+            ReadCapacityUnits: 5,
+            WriteCapacityUnits: 5
           },
           AttributeDefinitions: [
             {
