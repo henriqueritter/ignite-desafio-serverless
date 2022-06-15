@@ -37,7 +37,7 @@ Rotas necessárias para o Desafio:
 
 ### Milha Extra
 
-Como complemento criei os seguintes métodos foram adicionados:
+Como complemento ao desafio foram criadas as seguintes rotas:
 
 - **DELETE -** `/todos/{todo_id}`
 Deleta um *todo* atráves do Id passado por path param.
