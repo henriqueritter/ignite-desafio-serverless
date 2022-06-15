@@ -46,7 +46,26 @@ const serverlessConfiguration: AWS = {
           method: "patch",
           cors: true
         }
-
+      }]
+    },
+    listAllTodos: {
+      handler: "src/functions/listAllTodos.handler",
+      events: [{
+        http: {
+          path: "todos",
+          method: "get",
+          cors: true
+        }
+      }]
+    },
+    deleteTodoById: {
+      handler: "src/functions/deleteTodoById.handler",
+      events: [{
+        http: {
+          path: "todos/{todo_id}",
+          method: "delete",
+          cors: true
+        }
       }]
     }
   },
